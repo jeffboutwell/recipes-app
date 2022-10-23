@@ -1,0 +1,59 @@
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: Bitter, serif;
+}
+
+h1 {
+  font-weight: 900;
+  font-size: 3.5rem;
+}
+h2 {
+  font-weight: 700;
+}
+
+#basic-navbar-nav {
+  justify-content: right;
+}
+#bits-n-tags {
+  margin: 1.5em 0;
+  border: .25px #555 solid;
+  border-right: none;
+  border-left: none;
+}
+#tags {
+  justify-content: right;
+}
+#bits .list-group-item, #tags .list-group-item {
+  border: none;
+}
+#bits .list-group-item:first-child {
+  padding-left: 0;
+}
+#hero {
+  padding-bottom: 2em;
+}
+#hero .description p {
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 300;
+}
+#ingredients li, #instructions li {
+  font-size: 1.2rem;
+}
+#instructions ol {
+  list-style-position: inside;
+}
+
+.navbar-brand {
+  font: 4em "Loved by the King";
+}
+.navbar-nav {
+  text-transform: lowercase;
+}
+.navbar-nav .nav-link {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.tag {
+  font-weight: 700;
+  font-style: italic;
+}
