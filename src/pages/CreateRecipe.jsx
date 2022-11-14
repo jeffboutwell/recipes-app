@@ -1,11 +1,11 @@
 import {useState, useEffect, useRef} from 'react'
 import {getAuth,onAuthStateChanged} from 'firebase/auth'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
-import {addDoc, collection, serverTimestamp} from 'firebase/firestore'
+import {addDoc, collection, serverTimestamp,query,orderBy,getDocs} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import {v4 as uuidv4} from 'uuid'
 import {useNavigate} from 'react-router-dom'
-import {Form, Button } from 'react-bootstrap';
+import {Form, Button, FormGroup, FormLabel } from 'react-bootstrap';
 import { toast } from 'react-toastify'
 
 function CreateRecipe() {
@@ -20,9 +20,34 @@ function CreateRecipe() {
     })
     const {name,description,type,ingredients,directions,images,featuredImage} = formData
     const [loading, setLoading] = useState(false)
+    const [tags, setTags] = useState(null)
+    const [addTag, setAddTag] = useState(false)
+    const [newTagText, setNewTagText] = useState(null)
     const auth = getAuth()
     const navigate = useNavigate()
     const isMounted = useRef(true)
+
+    // Fetch tags
+    useEffect(() => {
+        const fetchTags = async () => {
+        const tagsRef = collection(db,'tags')
+        const q = query(tagsRef, orderBy('tagDisplay'))
+        const querySnap = await getDocs(q)
+
+            let resultsArray = []
+            querySnap.forEach((doc) => {
+                resultsArray.push(doc.data())
+                })
+                if(resultsArray.length>0) {
+                setTags(resultsArray)
+                setLoading(false)
+                } else {
+                console.log('Doc does not exist')
+                }
+        }
+
+        fetchTags()
+    }, [])
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -88,6 +113,10 @@ function CreateRecipe() {
             directions: dirArray,
             timestamp: serverTimestamp()
         }
+
+        formDataCopy.imgUrls.map((url) => {
+            url = url.replace('https://firebasestorage.googleapis.com/v0/b/recipes-app-a8829.appspot.com','https://ik.imagekit.io/x25zmqidz')
+        })
 
         delete formDataCopy.images
         const docRef = await addDoc(collection(db, 'recipes'), formDataCopy)
@@ -211,6 +240,31 @@ const parseDirList = list => {
 }
 /********  end Parse Directions  *********/
 
+    const showNewTagForm = () => {
+        setAddTag(true)
+    }
+
+    const onTagTextChange = (e) => {
+        setNewTagText(e.target.value)
+    }
+
+    const createTag = async () => {
+        if(newTagText) {
+            const slug = undefined ? '' : newTagText.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase()
+            const tagDataCopy = {
+                tagDisplay: newTagText,
+                tagSlug: slug
+            }
+            const tagRef = await addDoc(collection(db, 'tags'), tagDataCopy)
+            setTags({
+                ...tags,
+                tagDataCopy
+            })
+            document.getElementById('new-tag').value = ''
+        } else {
+            alert('Please enter a name for the new tag.')
+        }
+    }
 
   return (
       <>
@@ -219,23 +273,34 @@ const parseDirList = list => {
         </header>
         <main>
             <Form onSubmit={onSubmit}>
-                <Form.Group className="mb-3" controlId="name">
+                <Form.Group className="form-group" controlId="name">
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter recipe name" value={name} onChange={onMutate} required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="description">
+                <Form.Group className="form-group" controlId="description">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter recipe description" value={description} onChange={onMutate} required />
+                    <Form.Control as="textarea" placeholder="Enter recipe description" rows='4' value={description} onChange={onMutate} required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="ingredients">
+                <Form.Group className="form-group" controlId="ingredients">
                     <Form.Label>Ingredients</Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter recipe ingredients" value={ingredients} onChange={onMutate} required />
+                    <Form.Control as="textarea" placeholder="Enter recipe ingredients" rows='8' value={ingredients} onChange={onMutate} required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="directions">
+                <Form.Group className="form-group" controlId="directions">
                     <Form.Label>Directions</Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter recipe directions" value={directions} onChange={onMutate} required />
+                    <Form.Control as="textarea" placeholder="Enter recipe directions" rows='8' value={directions} onChange={onMutate} required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="images">
+                <FormGroup className="form-group" controlId='tags'>
+                    <FormLabel>Tags</FormLabel>
+                    {tags && tags.map((tag, index) => (
+                        <Form.Check inline type="switch" id={`${tag.tagSlug}-switch`} label={tag.tagDisplay} />
+                    ))}
+                    <Button variant="outline-secondary" className='add-tag' onClick={showNewTagForm} size='sm' title='Create a new tag'>+</Button>
+                    <FormGroup className={'new-tag-group' + (addTag ? " visible " : "")}>
+                        <Form.Control type='text' placeholder='New Tag' id='new-tag' size='30' onChange={onTagTextChange} />
+                        <Button varient='secondary' type='submit' onClick={createTag}>Add Tag</Button>
+                    </FormGroup>
+                </FormGroup>
+                <Form.Group className="form-group" controlId="images">
                     <Form.Label>Images</Form.Label>
                     <Form.Control type="file" placeholder="Upload images" onChange={onMutate} max='6' accept='.jpg,.png,.jpeg' multiple required />
                 </Form.Group>

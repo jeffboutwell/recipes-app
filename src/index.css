@@ -10,6 +10,15 @@ h2 {
   font-weight: 700;
 }
 
+footer {
+  background-color: #ccc;
+  padding: 4rem 0;
+  color: #fff;
+}
+footer .contact {
+  text-align: right;
+}
+
 #basic-navbar-nav {
   justify-content: right;
 }
@@ -43,6 +52,9 @@ h2 {
   list-style-position: inside;
 }
 
+.container {
+  padding: 0;
+}
 .navbar-brand {
   font: 4em "Loved by the King";
 }
@@ -53,7 +65,86 @@ h2 {
   padding-left: 1rem;
   padding-right: 1rem;
 }
-.tag {
-  font-weight: 700;
-  font-style: italic;
+
+.home .navbar .container, .home .navbar-collapse, .home .navbar-collapse .navbar-nav {
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
+.home .navbar-collapse .navbar-nav {
+  flex-basis: 100%;
+}
+.home .navbar-brand {
+  font-size: 6em;
+  flex-basis: 100%;
+  text-align: center;
+}
+.home .navbar-collapse .navbar-nav a {
+  width: 8em;
+  text-align: center;
+}
+.home .featured, .home .recent {
+  margin-bottom: 3rem;
+}
+.home .featured {
+  margin-top: 3rem;
+}
+.home .featured h2 {
+  margin-top: 1rem;
+  font-size: 3rem;
+}
+.home .featured a, .recipe .source a {
+  color: #333;
+  text-decoration: none;
+}
+.home .featured .desc {
+  font-weight: 200;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+.source a:hover {
+  text-decoration: underline;
+}
+.card.recipe {
+  border: 0;
+}
+.card.recipe .card-img {
+  border-radius: 0;
+}
+.card.recipe .card-title {
+  font-size: 1.5rem;
+  margin-top: .75rem;
+}
+.card.recipe a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.5s ease;
+}
+.container.recipe .info {
+  margin-bottom: 3rem;
+}
+.meta {
+  border: 1px solid #ddd;
+  border-left: 0;
+  border-right: 0;
+  padding: .75rem 0;
+  margin-bottom: 1rem;
+}
+.tag {
+  font-style: normal;
+  font-weight: 200;
+  margin-left: .5rem;
+  background-color: #efefef;
+  border-radius: .3rem;
+  padding: .2rem .4rem;
+}
+
+/* Create Recipe Form */
+div.form-group { margin-bottom: 2em; }
+label.form-label { font-size: 1.5em; font-weight: 700; }
+label[for=tags] { display: block; }
+.form-check-inline { margin-right: 2em; }
+.add-tag { --bs-btn-padding-y: .1rem; --bs-btn-border-radius: 1rem; }
+.new-tag-group { margin-top: 1em; display: none; }
+.new-tag-group.visible { display: block; }
+.new-tag-group input { width: 15em; display: inline-block; margin-right: 1em; }

@@ -1,12 +1,16 @@
 import {useState, useEffect} from 'react'
 import {getAuth, updateProfile} from 'firebase/auth'
-import {updateDoc, doc} from 'firebase/firestore'
+import {updateDoc, doc, collection, getDocs, query, where, orderBy, deleteDoc} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import {useNavigate, Link} from 'react-router-dom'
+import {Container,Row,Col} from 'react-bootstrap'
+import RecipeListItem from '../components/RecipeListItem'
 import {toast} from 'react-toastify'
 
 function Profile() {
   const auth = getAuth()
+  const [loading, setLoading] = useState(true)
+  const [recipes, setRecipes] = useState(null)
   const [changeDetails, setChangeDetails] = useState(false)
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
@@ -15,6 +19,28 @@ function Profile() {
 
   const navigate = useNavigate()
   const {name, email} = formData
+
+  // Fetch User Recipes
+  useEffect(() => {
+    const fetchUserRecipes = async () => {
+      const recipesRef = collection(db, 'recipes')
+      const q = query(recipesRef, where('userRef', '==', auth.currentUser.uid), orderBy('timestamp', 'desc'))
+
+      const querySnap = await getDocs(q)
+
+      let recipes = []
+      querySnap.forEach((doc) => {
+        return recipes.push({
+          id: doc.id,
+          data: doc.data()
+        })
+      })
+      setRecipes(recipes)
+      setLoading(false)
+    }
+
+    fetchUserRecipes()
+  }, [auth.currentUser.uid])
 
   const onLogout = () => {
     auth.signOut()
@@ -49,7 +75,7 @@ function Profile() {
 
   return <div className='profile'>
     <header className="profileHeader">
-      <p className="pageHeader">My Profile</p>
+      <h1>My Profile</h1>
       <button type="button" className="logOut" onClick={onLogout}>
         Logout
       </button>
@@ -73,6 +99,21 @@ function Profile() {
       <Link to='/create-recipe'>
         <p>Create Recipe</p>
       </Link>
+
+      {!loading && recipes?.length > 0 && (
+        <>
+          <h2>My Recipes</h2>
+          <Container>
+            <Row className='profileRecipes'>
+            {recipes.map((recipe) => (
+              <Col key={recipe.id} xs={12} md={6} lg={4} xl={3}>
+                <RecipeListItem recipe={recipe.data} id={recipe.id} imgW="500" imgH="500" />
+              </Col>
+            ))}
+            </Row>
+          </Container>
+        </>
+      )}
     </main>
   </div>
 }

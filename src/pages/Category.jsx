@@ -1,57 +1,47 @@
 import {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
-import {collection, getDocs, query, where, orderBy, limit, startAfter} from 'firebase/firestore'
+import {collection, getDocs, query, where, orderBy} from 'firebase/firestore'
 import {db} from '../firebase.config'
-import {toast} from 'react-toastify'
-import { Container } from 'react-bootstrap';
-import RecipeListItem from '../components/RecipeListItem'
+import { Container, Row } from 'react-bootstrap';
+import RecipeList from '../components/RecipeList'
 
 function Category() {
-    const [recipes, setRecipes] = useState(null)
+    const [tag, setTag] = useState(null)
     const [loading, setLoading] = useState(true)
 
     const params = useParams()
 
     useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const recipesRef = collection(db,'recipes')
-                const q = query(recipesRef,where('type', '==', params.categoryName), orderBy('timestamp', 'desc'), limit(10))
-                const querySnap = await getDocs(q)
-                let recipes = []
-                querySnap.forEach((doc) => {
-                    return recipes.push({
-                        id: doc.id,
-                        data: doc.data()
-                    })
+        const fetchTags = async () => {
+          const tagsRef = collection(db,'tags')
+          const q = query(tagsRef, where('tagSlug', '==', params.categoryName))
+          const querySnap = await getDocs(q)
+
+            let resultsArray = []
+            querySnap.forEach((doc) => {
+                resultsArray.push(doc.data())
                 })
-                setRecipes(recipes)
+                if(resultsArray.length>0) {
+                setTag(resultsArray[0])
                 setLoading(false)
-            } catch (error) {
-                toast.error('Could not fetch recipes')
-            }
+                } else {
+                console.log('Doc does not exist')
+                }
         }
 
-        fetchRecipes()
-    },[params.categoryName])
+        fetchTags()
+    }, [params.categoryName])
+
+    const recipesRef = collection(db,'recipes')
+    const q = query(recipesRef, where('tags', 'array-contains', params.categoryName), orderBy('timestamp', 'desc'))
 
   return (
-      <Container>
-        <header>
-            <h1>
-                {params.categoryName}
-            </h1>
-        </header>
-        {loading ? (<p>Loading...</p>) : <>
-            <main>
-                <div className="categoryListings">
-                    {recipes.map((recipe) => (
-                        <RecipeListItem recipe={recipe.data} id={recipe.id} key={recipe.id} />
-                    ))}
-                </div>
-            </main>
-        </>}
-      </Container>
+    <Container className='category'>
+        <h1>{tag && tag.tagDisplay}</h1>
+        <Row>
+            <RecipeList format="minimal" query={q} imgW="500" imgH="300" />
+        </Row>
+    </Container>
   )
 }
 

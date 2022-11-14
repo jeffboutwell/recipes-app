@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {Link, useNavigate, useParams} from 'react-router-dom'
-import {getDoc,doc,collection,query,where, getDocs} from 'firebase/firestore'
+import {collection,query,where, getDocs} from 'firebase/firestore'
 import {getAuth} from 'firebase/auth'
 import {db} from '../firebase.config'
 import {Container,Row,Col,Image, ListGroup} from 'react-bootstrap'
@@ -27,7 +27,6 @@ function Recipe() {
       })
       if(resultsArray.length>0) {
         setRecipe(resultsArray[0])
-        //console.log(recipe)
         setLoading(false)
       } else {
         console.log('Doc does not exist')
@@ -42,7 +41,7 @@ function Recipe() {
   }
 
   return (
-    <Container>
+    <Container className='recipe'>
         <div className="shareIconDiv" onClick={() => {
           navigator.clipboard.writeText(window.location.href)
           toast.info('Link copied!')
@@ -50,11 +49,35 @@ function Recipe() {
           <p><i className="fa-solid fa-share" alt='Share Link'></i></p>
           <p>View <a href={recipe.sourceUrl} target='_blank'>original recipe</a></p>
         </div>
-        <h1>{recipe.name}</h1>
-        <Image fluid src={recipe.imgUrls[0]}></Image>
         <Container>
-          <Row>
+          <Row className='meta'>
+            {recipe.tags.length > 0 && (
+              recipe.tags.map(function(tag,index){
+                  return (
+                    <Col className='tags' key={index}>
+                      <Link to={{ pathname: `/category/${tag}` }}>
+                        <span className="tag">{tag}</span>
+                      </Link>
+                    </Col>
+                  )
+                })
+              )}
+          </Row>
+          <Row className='info'>
             <Col>
+              <h1>{recipe.name}</h1>
+              <p className="desc">{recipe.description}</p>
+              {recipe.sourceUrl && recipe.sourceName && (
+                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank'>{recipe.sourceName}</a></p>
+                )
+              }
+            </Col>
+            <Col md={8}>
+              <Image fluid src={recipe.imgUrls[0]+'&tr=w-800,h-500'}></Image>
+            </Col>
+          </Row>
+          <Row className='ing-dir'>
+            <Col md={6}>
               <h2>Ingredients</h2>
               <ListGroup as='ul' variant='flush'>
                 {recipe.ingredients.map(function(ing,index){
@@ -62,7 +85,7 @@ function Recipe() {
                 })}
               </ListGroup>
             </Col>
-            <Col>
+            <Col md={6}>
               <h2>Directions</h2>
               <ListGroup as='ol' numbered variant='flush'>
               {recipe.directions.map(function(dir,index){
