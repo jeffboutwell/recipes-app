@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import {getAuth} from 'firebase/auth'
 import {doc, collection, getDocs, query, limit, orderBy, where, deleteDoc} from 'firebase/firestore'
 import {db} from '../firebase.config'
-//import RecipeListItem from '../components/RecipeListItem'
 import RecipeList from '../components/RecipeList'
 import {Container,Row,Col,Image} from 'react-bootstrap'
 
@@ -12,7 +11,6 @@ function Home() {
   const [loading, setLoading] = useState(true)
   const [featuredRecipe, setFeaturedRecipe] = useState(null)
   const [recipes, setRecipes] = useState(null)
-  if(window.location.pathname === '/') { document.getElementById('root').classList.add('home') }
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -38,11 +36,10 @@ function Home() {
   }, [])
 
   const recipesRef = collection(db, 'recipes')
-  const featuredQ = query(recipesRef, limit(1), orderBy('timestamp', 'desc'))
-  const q = query(recipesRef, limit(4), orderBy('timestamp', 'desc'))
+  const q = query(recipesRef, orderBy('timestamp', 'desc'))
 
   return (
-      <div className="explore">
+      <div className='home'>
         <main>
         <Container className='featured'>
               <Row>
@@ -67,8 +64,8 @@ function Home() {
             </Container>
             <Container className='recent'>
               <h2>Most Recent</h2>
-              <Row>
-                <RecipeList format="minimal" query={q} imgW="500" imgH="300" />
+              <Row className='recipeList'>
+                <RecipeList format="minimal" query={q} imgW="500" imgH="300" allowEdit={false} limit="4" />
               </Row>
             </Container>
         </main>

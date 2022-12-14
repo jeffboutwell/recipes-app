@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom'
-import {Container, Row, Col} from 'react-bootstrap'
+import {Container, Row, Col,Navbar} from 'react-bootstrap'
 
 function Footer() {
   return (
@@ -7,10 +7,10 @@ function Footer() {
         <Container>
           <Row>
             <Col>
-              <p>Recipes App</p>
+              <Navbar.Brand href="/">Recipes</Navbar.Brand>
             </Col>
             <Col>
-              <p className="contact"><Link to='mailto:jeffboutwell@gmail.com'>jeffboutwell@gmail.com</Link></p>
+              <p className="contact"><a href='mailto:jeffboutwell@gmail.com'>jeffboutwell@gmail.com</a></p>
             </Col>
           </Row>
         </Container>

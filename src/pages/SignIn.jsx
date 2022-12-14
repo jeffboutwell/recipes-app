@@ -14,7 +14,7 @@ function SignIn() {
   })
   const {email,password} = formData
 
-  const naviate = useNavigate()
+  const navigate = useNavigate()
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -30,7 +30,7 @@ function SignIn() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
   
       if(userCredential.user) {
-        naviate('/')
+        navigate('/')
       }
     } catch(error) {
       toast.error('Bad user credentials')
@@ -43,11 +43,11 @@ function SignIn() {
       <Form onSubmit={onSubmit}>
       <Form.Group className="mb-3" controlId="email">
         <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" onChange={onChange} />
+        <Form.Control type="email" placeholder="Enter email" onChange={onChange} value={email} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="password">
         <Form.Label>Password</Form.Label>
-        <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Password" onChange={onChange} />
+        <Form.Control type={showPassword ? 'text' : 'password'} placeholder="Password" onChange={onChange} value={password} />
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check type="checkbox" label="Show Password" onClick={() => setShowPassword((prevState) => !prevState)} />
@@ -56,7 +56,7 @@ function SignIn() {
         Sign In
       </Button>
     </Form>
-    <Link to='/forgot-password' className='forgotPasswordLink'>Forgot Password</Link>
+    <Link to='/forgot-password'>Forgot Password</Link>
 
     <OAuth />
     <Link to='/sign-up' className='registerLink'>

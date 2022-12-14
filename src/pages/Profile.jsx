@@ -4,6 +4,7 @@ import {updateDoc, doc, collection, getDocs, query, where, orderBy, deleteDoc} f
 import {db} from '../firebase.config'
 import {useNavigate, Link} from 'react-router-dom'
 import {Container,Row,Col} from 'react-bootstrap'
+import RecipeList from '../components/RecipeList'
 import RecipeListItem from '../components/RecipeListItem'
 import {toast} from 'react-toastify'
 
@@ -19,28 +20,6 @@ function Profile() {
 
   const navigate = useNavigate()
   const {name, email} = formData
-
-  // Fetch User Recipes
-  useEffect(() => {
-    const fetchUserRecipes = async () => {
-      const recipesRef = collection(db, 'recipes')
-      const q = query(recipesRef, where('userRef', '==', auth.currentUser.uid), orderBy('timestamp', 'desc'))
-
-      const querySnap = await getDocs(q)
-
-      let recipes = []
-      querySnap.forEach((doc) => {
-        return recipes.push({
-          id: doc.id,
-          data: doc.data()
-        })
-      })
-      setRecipes(recipes)
-      setLoading(false)
-    }
-
-    fetchUserRecipes()
-  }, [auth.currentUser.uid])
 
   const onLogout = () => {
     auth.signOut()
@@ -73,6 +52,10 @@ function Profile() {
     }))
   }
 
+  const onEdit = (recipeSlug) => navigate(`/edit-recipe/${recipeSlug}`)
+  const recipesRef = collection(db, 'recipes')
+  const q = query(recipesRef, where('userRef', '==', auth.currentUser.uid), orderBy('timestamp', 'desc'))
+
   return <div className='profile'>
     <header className="profileHeader">
       <h1>My Profile</h1>
@@ -100,20 +83,13 @@ function Profile() {
         <p>Create Recipe</p>
       </Link>
 
-      {!loading && recipes?.length > 0 && (
-        <>
-          <h2>My Recipes</h2>
-          <Container>
-            <Row className='profileRecipes'>
-            {recipes.map((recipe) => (
-              <Col key={recipe.id} xs={12} md={6} lg={4} xl={3}>
-                <RecipeListItem recipe={recipe.data} id={recipe.id} imgW="500" imgH="500" />
-              </Col>
-            ))}
-            </Row>
-          </Container>
-        </>
-      )}
+
+      <h2>My Recipes</h2>
+      <Container>
+        <Row className='recipeList'>
+          <RecipeList format="minimal" query={q} imgW="500" imgH="300" allowEdit={true} />
+        </Row>
+      </Container>
     </main>
   </div>
 }

@@ -38,7 +38,7 @@ function Category() {
   return (
     <Container className='category'>
         <h1>{tag && tag.tagDisplay}</h1>
-        <Row>
+        <Row className='recipeList'>
             <RecipeList format="minimal" query={q} imgW="500" imgH="300" />
         </Row>
     </Container>
