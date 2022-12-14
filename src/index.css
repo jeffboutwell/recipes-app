@@ -199,6 +199,9 @@ img { width: 100%; }
 .meta a:hover {
   background-color: #dfdfdf;
 }
+.ing-dir.row {
+  margin-bottom: 2em;
+}
 
 /* Create Recipe Form */
 div.form-group { margin-bottom: 2em; }
@@ -220,3 +223,4 @@ label[for=tags] { display: block; }
 #editRecipe .editImgThumb { position: relative; }
 #editRecipe .editImgThumb .fa-trash-can { position: absolute; right: .5rem; top: .5rem; opacity: .6; }
 #editRecipe .editImgThumb .fa-trash-can:hover { opacity: 1; }
+#editRecipe .form-group.buttons button { margin-right: 2em; }

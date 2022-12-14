@@ -26,9 +26,10 @@ function EditRecipe() {
         tags: [],
         notes: '',
         images: {},
-        featuredImage: ''
+        featuredImage: '',
+        slug: ''
     })
-    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,featuredImage} = formData
+    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,featuredImage,slug} = formData
     const [loading, setLoading] = useState(false)
     const [allTags, setAllTags] = useState(null)
     const [addTag, setAddTag] = useState(false)
@@ -43,6 +44,7 @@ function EditRecipe() {
     const params = useParams()
     const isMounted = useRef(true)
 
+    //Load recipe from Firebase
     useEffect(() => {
       setLoading(true)
       const urlParams = (new URLSearchParams(window.location.search))
@@ -266,6 +268,10 @@ function EditRecipe() {
         }
     }
 
+    const cancelChanges = e => {
+        navigate(`/recipe/${slug}`)
+    }
+
   return (
       <>
         <header>
@@ -338,7 +344,10 @@ function EditRecipe() {
                     </Container>
                     <Form.Control type="file" placeholder="Upload images" onChange={onMutate} max='1' accept='.jpg,.png,.jpeg' multiple />
                 </Form.Group>
-                <Button variant='primary' type='submit'>Save Recipe</Button>
+                <Form.Group className="form-group buttons" controlId="buttons">
+                    <Button variant='primary' type='submit'>Save Recipe</Button>
+                    <Button variant='secondary' onClick={cancelChanges}>Cancel</Button>
+                </Form.Group>
             </Form>
         </main>
       </>
