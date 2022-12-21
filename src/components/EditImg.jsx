@@ -8,7 +8,9 @@ const handleDelete = (e) => {
 function EditImg(props) {
   return (
       <div className='editImgThumb'>
-        <i className="fa-solid fa-trash-can" onClick={handleDelete}></i>
+        {props.enableDelete && props.enableDelete > 0 (
+          <i className="fa-solid fa-trash-can" onClick={handleDelete}></i>
+        )}
         <Image fluid src={props.url+'&tr=w-200,h-200'}></Image>
       </div>
   )

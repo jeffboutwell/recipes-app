@@ -12,6 +12,7 @@ import {Form, Button, FormGroup, FormLabel, Container, Row, Col } from 'react-bo
 import { toast } from 'react-toastify'
 import EditImg from "../components/EditImg"
 import {parseIngList,parseDirList,parseIngObj,parseDirArr} from '../js/recipeMods'
+import {uploadImageArray} from '../js/uploadImages'
 
 function EditRecipe() {
     const [formData,setFormData] = useState({
@@ -26,10 +27,11 @@ function EditRecipe() {
         tags: [],
         notes: '',
         images: {},
+        imgUrls: [],
         featuredImage: '',
         slug: ''
     })
-    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,featuredImage,slug} = formData
+    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,imgUrls,featuredImage,slug} = formData
     const [loading, setLoading] = useState(false)
     const [allTags, setAllTags] = useState(null)
     const [addTag, setAddTag] = useState(false)
@@ -43,6 +45,7 @@ function EditRecipe() {
     const navigate = useNavigate()
     const params = useParams()
     const isMounted = useRef(true)
+    const filePickerRef = useRef(null)
 
     //Load recipe from Firebase
     useEffect(() => {
@@ -100,49 +103,6 @@ function EditRecipe() {
         e.preventDefault()
 
         setLoading(true)
-        //Store images in Firebase
-/*         const storeImage = async (image) => {
-            return new Promise((resolve,reject) => {
-                const storage = getStorage()
-                const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`
-
-                const storageRef = ref(storage, 'images/' + fileName)
-
-                const uploadTask = uploadBytesResumable(storageRef, image)
-
-                uploadTask.on('state_changed', 
-                    (snapshot) => {
-                        // Observe state change events such as progress, pause, and resume
-                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Upload is ' + progress + '% done');
-                        switch (snapshot.state) {
-                        case 'paused':
-                            console.log('Upload is paused');
-                            break;
-                        case 'running':
-                            console.log('Upload is running');
-                            break;
-                        }
-                    }, 
-                    (error) => {
-                        reject(error)
-                    }, 
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        resolve(downloadURL);
-                        });
-                    }
-                );
-            })
-        } */
-
-/*         const imgUrls = await Promise.all(
-            [...images].map((image) => storeImage(image))
-        ).catch((error) => {
-            setLoading(false)
-            toast.error('Images not uploaded.')
-        }) */
 
         const createSlug = (name) => {
             return name == undefined ? '' : name.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase()
@@ -220,6 +180,21 @@ function EditRecipe() {
     }
 
     useEffect(() => {
+        if(images) {
+            const uploadImgFileList = async () => {
+                const imgFileArray = Array.from(images)
+                const imgUrlArray = await uploadImageArray(imgFileArray)
+                const allUrls = imgUrls.concat(imgUrlArray)
+                console.log('current imgUrls',imgUrls)
+                console.log('new imgUrlArray',imgUrlArray)
+                console.log('combined allUrls',allUrls)
+                setFormData({...formData,imgUrls:allUrls})
+            }
+            uploadImgFileList()
+        }
+    }, [images])
+
+    useEffect(() => {
         if(isMounted) {
             onAuthStateChanged(auth, (user) => {
                 if(user) {
@@ -266,6 +241,10 @@ function EditRecipe() {
         } else {
             alert('Please enter a name for the new tag.')
         }
+    }
+
+    const handleFilePicker = () => {
+        filePickerRef.current.click()
     }
 
     const cancelChanges = e => {
@@ -338,11 +317,12 @@ function EditRecipe() {
                     <Container className='editImgThumbsCont'>
                         <Row>
                             {formData.imgUrls && formData.imgUrls.map((url,index) => (
-                                <Col xs={4} sm={2} key={index}><EditImg url={url} /></Col>
+                                <Col xs={4} sm={2} key={index} className="box"><EditImg enableDelete={false} url={url} /></Col>
                             ))}
+                            <Col xs={4} sm={2} key='addImg' className="box"><div className="addImg" onClick={handleFilePicker}>+</div></Col>
                         </Row>
                     </Container>
-                    <Form.Control type="file" placeholder="Upload images" onChange={onMutate} max='1' accept='.jpg,.png,.jpeg' multiple />
+                    <Form.Control controlid='imageSelect' className='imageSelect' type="file" placeholder="Upload images" ref={filePickerRef} onChange={onMutate} max='1' accept='.jpg,.png,.jpeg' multiple />
                 </Form.Group>
                 <Form.Group className="form-group buttons" controlId="buttons">
                     <Button variant='primary' type='submit'>Save Recipe</Button>
