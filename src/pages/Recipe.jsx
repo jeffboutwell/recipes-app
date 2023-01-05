@@ -103,11 +103,21 @@ function Recipe() {
           <Row className='ing-dir'>
             <Col md={6}>
               <h2>Ingredients</h2>
-              <ListGroup as='ul' variant='flush'>
+              {recipe.ingObj && recipe.ingObj.map((sect,index) => {
+                  return <div className='ing-section' key={'section-'+index}>
+                    {sect.title && (<h3>{sect.title}</h3>)}
+                      <ListGroup as='ul' variant='flush'>
+                        {sect.ingList.map((ing,index) => {
+                          return <ListGroup.Item key={index} as='li'>{ing.amt} {ing.unit} {ing.name}</ListGroup.Item>
+                        })}
+                      </ListGroup>
+                  </div>
+                })}
+{/*               <ListGroup as='ul' variant='flush'>
                 {recipe.ingredients.map(function(ing,index){
                   return <ListGroup.Item key={index} as='li'>{ing.amt} {ing.unit} {ing.name}</ListGroup.Item>
                 })}
-              </ListGroup>
+              </ListGroup> */}
             </Col>
             <Col md={6}>
               <h2>Directions</h2>

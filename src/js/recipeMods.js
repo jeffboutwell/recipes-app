@@ -76,3 +76,21 @@ export const parseDirArr = arr => {
     return arr.join('\n')
 }
 /******* end Parse Ing object to edit *******/
+
+//******* Google Firebase Obj -> Array ******/
+export const convertFBObjToArray = obj => {
+    console.log('convertFBObjToArray')
+    return Array.from(obj)
+}
+//******* end Google Firebase Obj -> Array ******/
+
+//******* Ing Array -> Ing Obj ******/
+export const updateIngArray = arr => {
+    return [
+        {
+            title: 'Default Section Title',
+            ingList: arr
+        }
+    ]
+}
+//******* end Ing Array -> Ing Obj ******/

@@ -11,7 +11,7 @@ import arrayMove from 'array-move'
 import {Form, Button, FormGroup, FormLabel, Container, Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import EditImg from "../components/EditImg"
-import {parseIngList,parseDirList,parseIngObj,parseDirArr} from '../js/recipeMods'
+import {parseIngList,parseDirList,parseIngObj,parseDirArr,convertFBObjToArray,updateIngArray} from '../js/recipeMods'
 import {uploadImageArray} from '../js/uploadImages'
 
 function EditRecipe() {
@@ -23,6 +23,7 @@ function EditRecipe() {
         description: '',
         type: '',
         ingredients: '',
+        ingObj: [], 
         directions: '',
         tags: [],
         notes: '',
@@ -31,7 +32,7 @@ function EditRecipe() {
         featuredImage: '',
         slug: ''
     })
-    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,imgUrls,featuredImage,slug} = formData
+    const {name,servings,prepTime,cookTime,description,type,ingredients,ingObj,directions,tags,notes,images,imgUrls,featuredImage,slug} = formData
     const [loading, setLoading] = useState(false)
     const [allTags, setAllTags] = useState(null)
     const [addTag, setAddTag] = useState(false)
@@ -62,6 +63,7 @@ function EditRecipe() {
                 ...docSnap.data(),
                 ingredients: parseIngObj(docSnap.data().ingredients),
                 directions: parseDirArr(docSnap.data().directions),
+                ingObj: updateIngArray(docSnap.data().ingredients)
             })
             setLoading(false)
         } else {
@@ -170,13 +172,21 @@ function EditRecipe() {
                 images: e.target.files
             }))
         }
-        
+
         if(!e.target.files) {
             setFormData((prevState) => ({
                 ...prevState,
                 [e.target.id]: boolean ?? e.target.value
             }))
         }
+    }
+
+    const onIngMutate = e => {
+        console.log('clicked an ingredient item',e.target.value)
+/*             setFormData((prevState) => ({
+            ...prevState,
+            ingObj: ingObj
+        })) */
     }
 
     useEffect(() => {
@@ -243,6 +253,25 @@ function EditRecipe() {
         }
     }
 
+    const addNewIngSection = () => {
+        console.log('add new ing section clicked')
+        const tempIngObj = ingObj
+        const blankIngObj = {
+            title: '',
+            ingList: [{
+                amt: '',
+                unit: '',
+                name: ''
+            }]
+        }
+        tempIngObj.push(blankIngObj)
+        console.log('tempIngObj',tempIngObj)
+        setFormData({
+            ...formData,
+            ingObj: tempIngObj
+        })
+    }
+
     const handleFilePicker = () => {
         filePickerRef.current.click()
     }
@@ -280,18 +309,29 @@ function EditRecipe() {
                 </Form.Group>
                 <Form.Group className="form-group" controlId="ingredients">
                     <Form.Label>Ingredients</Form.Label>
-                    <SortableList onSortEnd={onSortEnd} className="ing-list" draggedItemClassName="dragged-ing" lockAxis='y'>
-                        {ingObjArray && ingObjArray.map((ing, index) => (
-                            <SortableItem key={`ingGroup-${index}`}>
-                                <Form.Group className={`ingGroup ingGroup-${index}`}>
-                                    <SortableKnob><i className="fa-solid fa-sort"></i></SortableKnob>
-                                    <Form.Control className='ingListItem amt' type="text" placeholder="amount" value={ing.amt} onChange={onMutate} />
-                                    <Form.Control className='ingListItem unit' type="text" placeholder="unit" value={ing.unit} onChange={onMutate} />
-                                    <Form.Control className='ingListItem name' type="text" placeholder="name" value={ing.name} onChange={onMutate} />
-                                </Form.Group>
-                            </SortableItem>
-                        ))}
-                    </SortableList>
+                        {
+                            ingObj && ingObj.map((sect,index) => {
+                                const sectionSlug = sect.title.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase()
+                                return (
+                                    <div key={sectionSlug}>
+                                        <Form.Control controlId={sectionSlug} type="text" placeholder={sect.title} value={sect.title} onChange={onIngMutate} />
+                                        <SortableList onSortEnd={onSortEnd} className="ing-list" draggedItemClassName="dragged-ing" lockAxis='y'>
+                                            {sect && sect.ingList.map((ing, index) => (
+                                                <SortableItem key={`ingGroup-${index}`}>
+                                                    <Form.Group className={`ingGroup ingGroup-${index}`}>
+                                                        <SortableKnob><i className="fa-solid fa-sort"></i></SortableKnob>
+                                                        <Form.Control className='ingListItem amt' type="text" placeholder="amount" value={ing.amt} onChange={onIngMutate} />
+                                                        <Form.Control className='ingListItem unit' type="text" placeholder="unit" value={ing.unit} onChange={onIngMutate} />
+                                                        <Form.Control className='ingListItem name' type="text" placeholder="name" value={ing.name} onChange={onIngMutate} />
+                                                    </Form.Group>
+                                                </SortableItem>
+                                            ))}
+                                        </SortableList>
+                                    </div>
+                                )
+                            })
+                        }
+                        <Button variant="outline-secondary" className='add-ingSect' onClick={addNewIngSection} size='sm' title='Create a new ingredient section'>+</Button>
                 </Form.Group>
                 <Form.Group className="form-group" controlId="directions">
                     <Form.Label>Directions</Form.Label>
