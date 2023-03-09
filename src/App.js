@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import PrivateRoute from './components/PrivateRoute'
 import Home from './pages/Home'
+import Categories from './pages/Categories'
 import Category from './pages/Category'
 import Profile from './pages/Profile'
 import SignIn from './pages/SignIn'
@@ -24,6 +25,7 @@ function App() {
         <Header />
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='categories' element={<Categories />} />
             <Route path='/category/:categoryName' element={<Category />} />
             <Route path='/recipe/:recipeSlug' element={<Recipe />} />
             <Route path='/profile' element={<PrivateRoute />}>

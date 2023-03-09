@@ -6,11 +6,10 @@ import {addDoc, collection, serverTimestamp,query,orderBy,getDocs,doc,updateDoc,
 import {db} from '../firebase.config'
 import {v4 as uuidv4} from 'uuid'
 import {useNavigate,useParams} from 'react-router-dom'
-import SortableList, { SortableItem, SortableKnob } from 'react-easy-sort'
-import arrayMove from 'array-move'
 import {Form, Button, FormGroup, FormLabel, Container, Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import EditImg from "../components/EditImg"
+import EditIngList from '../components/EditIngList'
 import {parseIngList,parseDirList,parseIngObj,parseDirArr} from '../js/recipeMods'
 import {uploadImageArray} from '../js/uploadImages'
 
@@ -94,10 +93,6 @@ function EditRecipe() {
 
         fetchTags()
     }, [])
-
-    const onSortEnd = (oldIndex, newIndex) => {
-        setIngObjArray((array) => arrayMove(array, oldIndex, newIndex))
-    }
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -216,6 +211,14 @@ function EditRecipe() {
         return <p>Loading...</p>
     }
 
+    const updateIngList = ingArray => {
+        console.log('updateIngList',ingArray)
+/*         setFormData((prevState) => ({
+            ...prevState,
+            ingredients: ingArray
+        })) */
+        setIngObjArray(ingArray)
+    }
 
     const showNewTagForm = () => {
         setAddTag(true)
@@ -278,21 +281,7 @@ function EditRecipe() {
                     <Form.Label>Description</Form.Label>
                     <Form.Control as="textarea" placeholder="Enter recipe description" rows='4' value={description} onChange={onMutate} required />
                 </Form.Group>
-                <Form.Group className="form-group" controlId="ingredients">
-                    <Form.Label>Ingredients</Form.Label>
-                    <SortableList onSortEnd={onSortEnd} className="ing-list" draggedItemClassName="dragged-ing" lockAxis='y'>
-                        {ingObjArray && ingObjArray.map((ing, index) => (
-                            <SortableItem key={`ingGroup-${index}`}>
-                                <Form.Group className={`ingGroup ingGroup-${index}`}>
-                                    <SortableKnob><i className="fa-solid fa-sort"></i></SortableKnob>
-                                    <Form.Control className='ingListItem amt' type="text" placeholder="amount" value={ing.amt} onChange={onMutate} />
-                                    <Form.Control className='ingListItem unit' type="text" placeholder="unit" value={ing.unit} onChange={onMutate} />
-                                    <Form.Control className='ingListItem name' type="text" placeholder="name" value={ing.name} onChange={onMutate} />
-                                </Form.Group>
-                            </SortableItem>
-                        ))}
-                    </SortableList>
-                </Form.Group>
+                <EditIngList ingList={ingredients} updateIngList={updateIngList} />
                 <Form.Group className="form-group" controlId="directions">
                     <Form.Label>Directions</Form.Label>
                     <Form.Control as="textarea" placeholder="directions" rows='8' value={directions} onChange={onMutate} required />

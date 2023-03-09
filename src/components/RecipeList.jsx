@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
-import {doc, collection, getDocs, query } from 'firebase/firestore'
-import {db} from '../firebase.config'
+import { getDocs } from 'firebase/firestore'
 import RecipeListItem from '../components/RecipeListItem'
 import {Col} from 'react-bootstrap'
 
