@@ -3,7 +3,8 @@ import {useNavigate, useLocation} from 'react-router-dom'
 import { Nav, NavDropdown, Navbar, Container, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap'
 import {getAuth} from 'firebase/auth'
 import { useAuthStatus } from "../hooks/useAuthStatus"
-import SearchBar from './SearchBar'
+import React, { createElement, Fragment, useRef } from 'react';
+import { render } from 'react-dom';
 
 function Header() {
   const {loggedIn, checkingStatus} = useAuthStatus()
@@ -11,10 +12,9 @@ function Header() {
   const navigate = useNavigate()
   const location = useLocation()
 
-/*   useEffect(() => {
-    const auth = getAuth()
-    setUser(auth.currentUser)
-  }) */
+  const plugins = React.useMemo(() => {
+    return []; // add more plugins here
+  }, []); 
 
   return (
         <Navbar bg="bg-white" expand="lg">
@@ -23,7 +23,6 @@ function Header() {
             <Navbar.Toggle aria-controls="main-navbar-container" />
             <Navbar.Collapse id="main-navbar-container">
             <Nav id="main-navbar">
-                <SearchBar />
                 <Nav.Link href="/categories">Categories</Nav.Link>
                 <NavDropdown id="profile-dropdown" title={loggedIn ? <i className="fa-solid fa-user"></i> : 'Sign In'}>
               <NavDropdown.Item href={loggedIn ? '/sign-out' : '/sign-in'}>{loggedIn ? 'Sign Out' : 'Sign In' }</NavDropdown.Item>
