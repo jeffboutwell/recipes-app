@@ -212,12 +212,17 @@ function EditRecipe() {
     }
 
     const updateIngList = ingArray => {
-        console.log('updateIngList',ingArray)
-/*         setFormData((prevState) => ({
+        let newArray = []
+        for (const [key, value] of Object.entries(ingArray)) {
+            let tempValue = value
+            newArray.push(tempValue)
+          }
+        console.log('updateIngList',newArray)
+         setFormData((prevState) => ({
             ...prevState,
-            ingredients: ingArray
-        })) */
-        setIngObjArray(ingArray)
+            ingredients: newArray
+        }))
+        //setIngObjArray(ingArray)
     }
 
     const showNewTagForm = () => {
