@@ -21,8 +21,8 @@ function EditRecipe() {
         cookTime: '',
         description: '',
         type: '',
-        ingredients: '',
-        directions: '',
+        ingredients: [],
+        directions: [],
         tags: [],
         notes: '',
         images: {},
@@ -38,8 +38,8 @@ function EditRecipe() {
     const [tagArray, setTagArray] = useState([])
     const [recipeID, setRecipeID] = useState(null)
     //const [recipe, setRecipe] = useState(false)
-    const [ingObjArray, setIngObjArray] = useState([])
-    const [dirString, setDirString] = useState([])
+    //const [ingObjArray, setIngObjArray] = useState([])
+    //const [dirString, setDirString] = useState([])
     const auth = getAuth()
     const navigate = useNavigate()
     const params = useParams()
@@ -55,7 +55,7 @@ function EditRecipe() {
         const docRef = doc(db,'recipes',urlParams.get('id'))
         const docSnap = await getDoc(docRef)
         if(docSnap.exists()) {
-            setIngObjArray(parseIngObj(docSnap.data().ingredients))
+            //setIngObjArray(parseIngObj(docSnap.data().ingredients))
             setTagArray(docSnap.data().tags)
             setFormData({
                 ...docSnap.data(),
@@ -116,7 +116,7 @@ function EditRecipe() {
             ...formData,
             slug: formData.slug,
             imgUrls: formData.imgUrls,
-            ingredients: ingObjArray,
+            ingredients,
             directions: dirArray,
             tags: tagSlugArray,
             timestamp: serverTimestamp()
@@ -139,7 +139,7 @@ function EditRecipe() {
         setLoading(false)
     }
 
-    const onMutate = e => {        
+    const onMutate = e => {
         let boolean = null
         if(e.target.id.includes('tag-switch')) {
             const tagId = e.target.id.replace('-tag-switch','')
@@ -165,7 +165,7 @@ function EditRecipe() {
                 images: e.target.files
             }))
         }
-        
+
         if(!e.target.files) {
             setFormData((prevState) => ({
                 ...prevState,
@@ -212,17 +212,10 @@ function EditRecipe() {
     }
 
     const updateIngList = ingArray => {
-        let newArray = []
-        for (const [key, value] of Object.entries(ingArray)) {
-            let tempValue = value
-            newArray.push(tempValue)
-          }
-        console.log('updateIngList',newArray)
          setFormData((prevState) => ({
             ...prevState,
-            ingredients: newArray
+            ingredients: ingArray
         }))
-        //setIngObjArray(ingArray)
     }
 
     const showNewTagForm = () => {
