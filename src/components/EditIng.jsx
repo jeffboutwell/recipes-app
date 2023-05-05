@@ -14,7 +14,7 @@ function EditIng(props) {
     }
 
     useEffect(() => {
-        console.log('edited',props.index)
+        console.log("edit Ing",props.index + ' ' + props.ing.name)
         props.updateIng(
             props.index,
             {
@@ -29,7 +29,6 @@ function EditIng(props) {
     <SortableItem key={props.ing.slugName}>
         <Form.Group>
             <SortableKnob><i className="fa-solid fa-sort"></i></SortableKnob>
-            <div className="item">{props.index} {props.ing.amt} {props.ing.unit} {props.ing.name}</div>
             <Form.Control className='ingListItem amt' type="text" placeholder="amount" value={amt} onChange={e => setAmt(e.target.value)} />
             <Form.Control className='ingListItem unit' type="text" placeholder="unit" value={unit} onChange={e => setUnit(e.target.value)} />
             <Form.Control className='ingListItem name' type="text" placeholder="name" value={name} onChange={e => setName(e.target.value)} />

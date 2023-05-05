@@ -216,6 +216,7 @@ function EditRecipe() {
             ...prevState,
             ingredients: ingArray
         }))
+        console.log('updateIngList:ingredients',ingredients)
     }
 
     const showNewTagForm = () => {

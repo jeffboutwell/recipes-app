@@ -7,11 +7,10 @@ import EditIng from './EditIng'
 
 function EditIngList(props) {
     const [ingArray,setIngArray] = useState(props.ingList)
-    const [items, setItems] = React.useState(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'])
 
     const onSortEnd = (oldIndex, newIndex) => {
+        console.log('onSortEnd',oldIndex,newIndex)
         setIngArray((array) => arrayMove(array, oldIndex, newIndex))
-        setItems((array) => arrayMove(array, oldIndex, newIndex))
     }
 
     const updateIngItem = (index,ingItem) => {
