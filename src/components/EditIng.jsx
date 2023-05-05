@@ -26,7 +26,7 @@ function EditIng(props) {
     },[amt,unit,name])
 
   return (
-    <SortableItem key={props.ing.slugName}>
+    <SortableItem>
         <Form.Group>
             <SortableKnob><i className="fa-solid fa-sort"></i></SortableKnob>
             <Form.Control className='ingListItem amt' type="text" placeholder="amount" value={amt} onChange={e => setAmt(e.target.value)} />

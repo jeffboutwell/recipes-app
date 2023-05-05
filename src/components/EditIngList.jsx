@@ -35,10 +35,8 @@ function EditIngList(props) {
         <Form.Label>Ingredients</Form.Label>
         <SortableList onSortEnd={onSortEnd} className="ing-list" draggedItemClassName="dragged-ing" lockAxis='y'>
             {ingArray.map((item,index) => (
-            <SortableItem key={`ingGroup-${index}`}>
-                <EditIng index={index} key={`ingGroup-${index}`} ing={item} deleteIng={deleteIngItem} updateIng={updateIngItem} />
-            </SortableItem>
-        ))}
+                <EditIng index={index} key={item.name.replace(' ','-')} ing={item} deleteIng={deleteIngItem} updateIng={updateIngItem} />
+            ))}
         </SortableList>
     </Form.Group>
   )
