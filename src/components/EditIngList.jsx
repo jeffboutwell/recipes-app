@@ -9,7 +9,6 @@ function EditIngList(props) {
     const [ingArray,setIngArray] = useState(props.ingList)
 
     const onSortEnd = (oldIndex, newIndex) => {
-        console.log('onSortEnd',oldIndex,newIndex)
         setIngArray((array) => arrayMove(array, oldIndex, newIndex))
     }
 
@@ -27,7 +26,6 @@ function EditIngList(props) {
 
     useEffect(() => {
         props.updateIngList(ingArray)
-        console.log('ingArray',ingArray)
     }, [ingArray])
 
   return (

@@ -9,12 +9,10 @@ function EditIng(props) {
     const [slugName,setSlugName] = useState(props.ing.name.replace(' ','-'))
 
     const deleteSelf = () => {
-        console.log('deleteSelf',props.index)
         props.deleteIng(props.index)
     }
 
     useEffect(() => {
-        console.log("edit Ing",props.index + ' ' + props.ing.name)
         props.updateIng(
             props.index,
             {
