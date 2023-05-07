@@ -42,7 +42,7 @@ const findIngUnit = ing => {
             name: ingName
         };
     } else {
-        return null;
+        return '';
     }
 }
 

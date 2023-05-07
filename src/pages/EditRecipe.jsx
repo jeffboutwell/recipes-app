@@ -130,7 +130,7 @@ function EditRecipe() {
         //Update recipe
         delete formDataCopy.images
         const docRef = doc(db,'recipes',recipeID)
-        //console.log('formDataCopy',formDataCopy)
+        console.log('formDataCopy',formDataCopy)
         await updateDoc(docRef,formDataCopy)
         setLoading(false)
         toast.success('Recipe updated')
