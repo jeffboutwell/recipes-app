@@ -16,6 +16,9 @@ footer {
   padding: 4rem 0;
   color: #333;
 }
+footer .row {
+  padding: 0 5%;
+}
 footer .navbar-brand {
   font-size: 3rem;
 }
@@ -165,22 +168,22 @@ img { width: 100%; }
 }
 
 /* Recipe */
-.container.recipe {
+.container-fluid.recipe {
   margin-top: 2rem;
 }
-.container.recipeInner {
+.container-fluid.recipeInner {
   margin-bottom: 6rem;
 }
-.container.recipe .edit-link {
+.container-fluid.recipe .edit-link {
   display: inline-block;
   color: #999;
   text-decoration: none;
 }
-.container.recipe .edit-link:hover {
+.container-fluid.recipe .edit-link:hover {
   color: #333;
   text-decoration: underline;
 }
-.container.recipe .info {
+.container-fluid.recipe .info {
   margin-bottom: 3rem;
 }
 .meta.row {
@@ -189,12 +192,19 @@ img { width: 100%; }
   border-right: 0;
   padding: .75rem 0;
   margin-bottom: 1rem;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+.meta.row div {
+  margin: .25rem 0;
 }
 .meta .servings, .meta .totalTime { font-size: .9rem; }
 .meta .servings { flex: .05 0 content; }
 .tags.col {
   flex: 0 0 content;
+}
+.meta .tags {
+  display: flex;
+  justify-content: flex-end;
 }
 .meta a {
   margin-left: .5rem;
@@ -211,7 +221,8 @@ img { width: 100%; }
 .meta a:hover {
   background-color: #dfdfdf;
 }
-.ing-dir.row {
+
+.ing-dir.row ul, .ing-dir.row ol {
   margin-bottom: 2em;
 }
 

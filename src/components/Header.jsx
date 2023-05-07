@@ -18,7 +18,7 @@ function Header() {
 
   return (
         <Navbar bg="bg-white" expand="lg">
-        <Container className={(window.location.pathname === '/') ? 'home header' : 'header'}>
+        <Container className={(window.location.pathname === '/') ? 'home header' : 'header'} fluid>
             <Navbar.Brand href="/">Recipes</Navbar.Brand>
             <Navbar.Toggle aria-controls="main-navbar-container" />
             <Navbar.Collapse id="main-navbar-container">

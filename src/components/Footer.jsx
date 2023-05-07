@@ -4,7 +4,7 @@ import {Container, Row, Col,Navbar,ListGroup} from 'react-bootstrap'
 function Footer() {
   return (
       <footer>
-        <Container>
+        <Container fluid>
           <Row>
             <Col>
               <Navbar.Brand href="/">Recipes</Navbar.Brand>

@@ -21,7 +21,7 @@ function App() {
   return (
     <div className='App'>
       <Router>
-      <Container>
+      <Container fluid>
         <Header />
           <Routes>
             <Route path='/' element={<Home />} />

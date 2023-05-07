@@ -51,12 +51,11 @@ function Recipe() {
   if(recipe.tags.length>0) { q = query(recipesRef, where('tags', 'array-contains-any', recipe.tags)) }
 
   return (
-    <Container className='recipe'>
+    <Container className='recipe' fluid>
         <div className="shareIconDiv" onClick={() => {
           navigator.clipboard.writeText(window.location.href)
           toast.info('Link copied!')
         }}>
-          
           {recipe.sourceUrl && (
             <>
             <p><i className="fa-solid fa-share" alt='Share Link'></i></p>
@@ -64,24 +63,24 @@ function Recipe() {
             </>
           )}
         </div>
-        <Container className='recipeInner'>
+        <Container className='recipeInner' fluid>
           <Row className='meta'>
             {recipe.servings && (
-              <Col className='servings'>Makes {recipe.servings}</Col>
+              <Col className='servings' xs={12} sm={4} lg={3}>Makes {recipe.servings}</Col>
             )}
             {recipe.prepTime && recipe.cookTime && (
-              <Col className='totalTime'>Prep time: {recipe.prepTime} minutes | Cook time: {recipe.cookTime} minutes | Total time: {parseInt(recipe.prepTime) + parseInt(recipe.cookTime)} minutes</Col>
+              <Col className='totalTime' xs={12} sm={true}>Prep time: {recipe.prepTime} minutes | Cook time: {recipe.cookTime} minutes | Total time: {parseInt(recipe.prepTime) + parseInt(recipe.cookTime)} minutes</Col>
             )}
             {recipe.tags && recipe.tags.length > 0 && (
-              recipe.tags.map(function(tag,index){
+              <Col className='tags' sm={12} lg={3}>
+              {recipe.tags.map(function(tag,index){
                   return (
-                    <Col className='tags' key={index}>
-                      <Link to={{ pathname: `/category/${tag}` }}>
+                      <Link to={{ pathname: `/category/${tag}` }} key={index}>
                         <span className="tag">{tag}</span>
                       </Link>
-                    </Col>
                   )
-                })
+                })}
+                </Col>
               )}
           </Row>
           <Row className='info'>
