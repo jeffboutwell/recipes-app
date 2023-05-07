@@ -19,8 +19,20 @@ footer {
 footer .navbar-brand {
   font-size: 3rem;
 }
-footer .contact {
-  text-align: right;
+
+footer #social-icons {
+  justify-content: flex-end;
+  align-items: center;
+}
+
+footer #social-icons a {
+  color: #777;
+  font-size: 1.25rem;
+  margin: .5rem;
+}
+
+footer #social-icons a:hover {
+  color: #555;
 }
 
 img { width: 100%; }
