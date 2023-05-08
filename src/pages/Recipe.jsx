@@ -127,7 +127,7 @@ function Recipe() {
           )}
         </Container>
         {recipe.tags.length>0 && (
-          <Container className='recent'>
+          <Container className='recent' fluid>
           <h2>Related Recipes</h2>
           <Row className='recipeList'>
             <RecipeList format="minimal" query={q} imgW="500" imgH="300" allowEdit={false} limit='4' />
@@ -136,7 +136,6 @@ function Recipe() {
         )}
 
     </Container>
-    
   )
 }
 
