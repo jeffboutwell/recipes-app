@@ -41,7 +41,7 @@ function Home() {
   return (
       <div className='home'>
         <main>
-        <Container className='featured'>
+        <Container className='featured' fluid>
               <Row>
                 <Col>
                   {!loading && recipes?.length > 0 && (
@@ -62,7 +62,7 @@ function Home() {
                 </Col>
               </Row>
             </Container>
-            <Container className='recent'>
+            <Container className='recent' fluid>
               <h2>Most Recent</h2>
               <Row className='recipeList'>
                 <RecipeList format="minimal" query={q} imgW="500" imgH="300" allowEdit={false} limit="4" />

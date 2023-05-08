@@ -18,16 +18,16 @@ function Header() {
 
   return (
         <Navbar bg="bg-white" expand="lg">
-        <Container className={(window.location.pathname === '/') ? 'home header' : 'header'} fluid>
+        <Container className={(window.location.pathname === '/') ? 'home header' : 'header'}>
             <Navbar.Brand href="/">Recipes</Navbar.Brand>
             <Navbar.Toggle aria-controls="main-navbar-container" />
             <Navbar.Collapse id="main-navbar-container">
             <Nav id="main-navbar">
                 <Nav.Link href="/categories">Categories</Nav.Link>
                 <NavDropdown id="profile-dropdown" title={loggedIn ? <i className="fa-solid fa-user"></i> : 'Sign In'}>
-              <NavDropdown.Item href={loggedIn ? '/sign-out' : '/sign-in'}>{loggedIn ? 'Sign Out' : 'Sign In' }</NavDropdown.Item>
-              <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-            </NavDropdown>
+                  <NavDropdown.Item href={loggedIn ? '/sign-out' : '/sign-in'}>{loggedIn ? 'Sign Out' : 'Sign In' }</NavDropdown.Item>
+                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                </NavDropdown>
             </Nav>
             </Navbar.Collapse>
         </Container>
