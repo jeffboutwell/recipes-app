@@ -250,3 +250,12 @@ label[for=tags] { display: block; }
 #editRecipe .addImg { background-color: #ddd; width: 200px; height: 200px; text-align: center; color: #fff; font-size: 10em; line-height: 200px; font-weight: 200; }
 #editRecipe .addImg:hover { background-color: #ccc; cursor: pointer; }
 #editRecipe .imageSelect { display: none; }
+
+/* Search */
+ol.ais-Hits-list {
+  position: absolute;
+  z-index: 100;
+}
+li.ais-Hits-item {
+  background-color: #eee;
+}

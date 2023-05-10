@@ -5,6 +5,7 @@ import {getAuth} from 'firebase/auth'
 import { useAuthStatus } from "../hooks/useAuthStatus"
 import React, { createElement, Fragment, useRef } from 'react';
 import { render } from 'react-dom';
+import SearchBar from './SearchBar'
 
 function Header() {
   const {loggedIn, checkingStatus} = useAuthStatus()
@@ -22,13 +23,13 @@ function Header() {
             <Navbar.Brand href="/">Recipes</Navbar.Brand>
             <Navbar.Toggle aria-controls="main-navbar-container" />
             <Navbar.Collapse id="main-navbar-container">
-            <Nav id="main-navbar">
-                <Nav.Link href="/categories">Categories</Nav.Link>
-                <NavDropdown id="profile-dropdown" title={loggedIn ? <i className="fa-solid fa-user"></i> : 'Sign In'}>
-                  <NavDropdown.Item href={loggedIn ? '/sign-out' : '/sign-in'}>{loggedIn ? 'Sign Out' : 'Sign In' }</NavDropdown.Item>
-                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
+              <Nav id="main-navbar">
+                  <Nav.Link href="/categories">Categories</Nav.Link>
+                  <NavDropdown id="profile-dropdown" title={loggedIn ? <i className="fa-solid fa-user"></i> : 'Sign In'}>
+                    <NavDropdown.Item href={loggedIn ? '/sign-out' : '/sign-in'}>{loggedIn ? 'Sign Out' : 'Sign In' }</NavDropdown.Item>
+                    <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                  </NavDropdown>
+              </Nav>
             </Navbar.Collapse>
         </Container>
         </Navbar>

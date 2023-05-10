@@ -1,23 +1,32 @@
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, SearchBox, Hits, useInstantSearch } from 'react-instantsearch-hooks-web';
+import { autocomplete, AutocompleteOptions } from "@algolia/autocomplete-js";
 import {doc, collection, getDocs, query, limit, orderBy, where, deleteDoc} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import SearchHit from './SearchHit'
 
-const searchClient = algoliasearch('9LOX4ZY5KD', '5c00faf5dfca48cde9b145547482ccdc');
+const searchClient = algoliasearch('9LOX4ZY5KD', '5c00faf5dfca48cde9b145547482ccdc')
+
+function Hit({ hit }) {
+  console.log('hit:',hit)
+  return (
+    <article>
+      <img src={hit.imgUrls[0]+`&tr=w-200,h-200`} alt={hit.name} />
+      <p>{hit.name}</p>
+    </article>
+  );
+}
 
 function SearchBar(props) {
   return (
     <InstantSearch searchClient={searchClient} indexName="recipes_jeffboutwell" {...props}>
       <SearchBox />
-      <NoResultsBoundary fallback={<NoResults />}>
-        <Hits hitComponent={SearchHit} />
-      </NoResultsBoundary>
+      <Hits hitComponent={Hit} />
     </InstantSearch>
   )
 }
 
-function NoResultsBoundary({ children, fallback }) {
+/* function NoResultsBoundary({ children, fallback }) {
   const { results } = useInstantSearch();
 
   // The `__isArtificial` flag makes sure not to display the No Results message
@@ -32,9 +41,9 @@ function NoResultsBoundary({ children, fallback }) {
   }
 
   return children;
-}
+} */
 
-function NoResults() {
+/* function NoResults() {
   const { indexUiState } = useInstantSearch();
 
   return (
@@ -44,6 +53,6 @@ function NoResults() {
       </p>
     </div>
   );
-}
+} */
 
 export default SearchBar
