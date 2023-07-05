@@ -8,42 +8,40 @@ function RecipeList(props) {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
     const [recipes, setRecipes] = useState(null)
+    const [relatedQuery,setRelatedQuery] = useState(props.query)
 
     useEffect(() => {
         const fetchUserRecipes = async () => {
             const querySnap = await getDocs(props.query)
 
-            let recipes = []
+            let recipesArray = []
             querySnap.forEach((doc) => {
-              return recipes.push({
+              console.log('id',doc.id)
+              return recipesArray.push({
                   id: doc.id,
                   data: doc.data()
               })
             })
-            recipes = recipes.slice(0,props.limit)
-            shuffle(recipes)
-            setRecipes(recipes)
+            recipesArray = recipesArray.slice(0,props.limit)
+            shuffle(recipesArray)
+            setRecipes(recipesArray)
             setLoading(false)
         }
 
         fetchUserRecipes()
-    }, [])
+    }, [relatedQuery])
 
     function shuffle(array) {
       let currentIndex = array.length,  randomIndex;
-    
       // While there remain elements to shuffle.
       while (currentIndex != 0) {
-    
         // Pick a remaining element.
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-    
         // And swap it with the current element.
         [array[currentIndex], array[randomIndex]] = [
           array[randomIndex], array[currentIndex]];
       }
-    
       return array;
     }
 
