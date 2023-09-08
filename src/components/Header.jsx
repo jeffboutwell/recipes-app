@@ -25,6 +25,7 @@ function Header() {
             <Navbar.Collapse id="main-navbar-container">
               <Nav id="main-navbar">
                   <Nav.Link href="/categories">Categories</Nav.Link>
+                  <SearchBar />
                   <NavDropdown id="profile-dropdown" title={loggedIn ? <i className="fa-solid fa-user"></i> : 'Sign In'}>
                     <NavDropdown.Item href={loggedIn ? '/sign-out' : '/sign-in'}>{loggedIn ? 'Sign Out' : 'Sign In' }</NavDropdown.Item>
                     <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
