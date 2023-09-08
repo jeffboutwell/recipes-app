@@ -10,7 +10,7 @@ import SearchHit from './SearchHit'
 const searchClient = algoliasearch('9LOX4ZY5KD', '5c00faf5dfca48cde9b145547482ccdc')
 
 function Hit({ hit }) {
-  console.log('hit:',hit)
+  //console.log('hit:',hit)
   return (
     <Link to={`/recipe/${hit.slug}`} className='searchRecipeLink'>
     <article>
@@ -21,49 +21,20 @@ function Hit({ hit }) {
   );
 }
 
-function handleSearchTextChange(e) {
-  console.log('search event: ',e)
-}
-
 function SearchBar(props) {
   const [showHits, setShowHits] = useState(false)
-  const [searchText, setSearchText] = useState('')
+
+  const queryHook = (query, search) => {
+    query ? setShowHits(true) : setShowHits(false)
+    search(query)
+  };
 
   return (
     <InstantSearch searchClient={searchClient} indexName="recipes_jeffboutwell" {...props}>
-      <SearchBox onFocus={()=>setShowHits(true)} onBlur={()=>setShowHits(false)} onChange={handleSearchTextChange} />
+      <SearchBox queryHook={queryHook} />
       {showHits ? <Hits hitComponent={Hit} /> : null}
     </InstantSearch>
   )
 }
-
-/* function NoResultsBoundary({ children, fallback }) {
-  const { results } = useInstantSearch();
-
-  // The `__isArtificial` flag makes sure not to display the No Results message
-  // when no hits have been returned yet.
-  if (!results.__isArtificial && results.nbHits === 0) {
-    return (
-      <>
-        {fallback}
-        <div hidden>{children}</div>
-      </>
-    );
-  }
-
-  return children;
-} */
-
-/* function NoResults() {
-  const { indexUiState } = useInstantSearch();
-
-  return (
-    <div>
-      <p>
-        No results for <q>{indexUiState.query}</q>.
-      </p>
-    </div>
-  );
-} */
 
 export default SearchBar
