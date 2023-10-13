@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom'
 import {Form, Button, FormGroup, FormLabel } from 'react-bootstrap';
 import { toast } from 'react-toastify'
 import {parseIngList,parseDirList} from '../js/recipeMods'
+import { addAlgoliaRecord } from '../js/algolia'
 
 function CreateRecipe() {
     const [formData,setFormData] = useState({
@@ -133,11 +134,12 @@ function CreateRecipe() {
 
         delete formDataCopy.images
         const docRef = await addDoc(collection(db, 'recipes'), formDataCopy)
-        setLoading(false)
-        toast.success('Recipe saved')
-        navigate(`/recipe/${formDataCopy.slug}`)
-
-        setLoading(false)
+        addAlgoliaRecord(formDataCopy).then(newObject => {
+            console.log('addAlgoliaRecord was successful',newObject)
+            setLoading(false)
+            toast.success('Recipe saved')
+            navigate(`/recipe/${formDataCopy.slug}`)    
+        })
     }
 
     const onMutate = e => {        

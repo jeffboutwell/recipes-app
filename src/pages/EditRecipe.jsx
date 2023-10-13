@@ -12,6 +12,7 @@ import EditImg from "../components/EditImg"
 import EditIngList from '../components/EditIngList'
 import {parseIngList,parseDirList,parseIngObj,parseDirArr} from '../js/recipeMods'
 import {uploadImageArray} from '../js/uploadImages'
+import { updateAlgoliaRecord } from "../js/algolia"
 
 function EditRecipe() {
     const [formData,setFormData] = useState({
@@ -45,6 +46,7 @@ function EditRecipe() {
     const params = useParams()
     const isMounted = useRef(true)
     const filePickerRef = useRef(null)
+    let algoliaObjectID = useRef('')
 
     //Load recipe from Firebase
     useEffect(() => {
@@ -130,13 +132,13 @@ function EditRecipe() {
         //Update recipe
         delete formDataCopy.images
         const docRef = doc(db,'recipes',recipeID)
-        //console.log('formDataCopy',formDataCopy)
         await updateDoc(docRef,formDataCopy)
-        setLoading(false)
-        toast.success('Recipe updated')
-        navigate(`/recipe/${formDataCopy.slug}`)
-
-        setLoading(false)
+        updateAlgoliaRecord(formDataCopy).then(updatedObject => {
+            console.log('updateAlgoliaRecord was successful',updatedObject)
+            setLoading(false)
+            toast.success('Recipe updated')
+            navigate(`/recipe/${formDataCopy.slug}`)
+        })
     }
 
     const onMutate = e => {
