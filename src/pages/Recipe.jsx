@@ -72,7 +72,7 @@ function Recipe() {
               <Col className='totalTime' xs={12} sm={true}>Prep time: {recipe.prepTime} minutes | Cook time: {recipe.cookTime} minutes | Total time: {parseInt(recipe.prepTime) + parseInt(recipe.cookTime)} minutes</Col>
             )}
             {recipe.tags && recipe.tags.length > 0 && (
-              <Col className='tags' sm={12} lg={3}>
+              <Col className='tags' sm={12} md={true}>
               {recipe.tags.map(function(tag,index){
                   return (
                       <Link to={{ pathname: `/category/${tag}` }} key={index}>
