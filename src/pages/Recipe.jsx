@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import {Link, useNavigate, useParams} from 'react-router-dom'
-import {collection,query,where,limit,orderBy,getDocs} from 'firebase/firestore'
-import {getAuth} from 'firebase/auth'
+import {collection,query,where,getDocs} from 'firebase/firestore'
+//import {getAuth} from 'firebase/auth'
 import {db} from '../firebase.config'
 import {Container,Row,Col,Image, ListGroup} from 'react-bootstrap'
 import RecipeList from '../components/RecipeList'
@@ -11,11 +11,11 @@ function Recipe() {
   const [recipe, setRecipe] = useState(null)
   const [recipeID, setRecipeID] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [shareLinkCopied, setShareLinkCopied] = useState(false)
+  //const [shareLinkCopied, setShareLinkCopied] = useState(false)
 
   const navigate = useNavigate()
   const params = useParams()
-  const auth = getAuth()
+  //const auth = getAuth()
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -59,7 +59,7 @@ function Recipe() {
           {recipe.sourceUrl && (
             <>
             <p><i className="fa-solid fa-share" alt='Share Link'></i></p>
-            <p>View <a href={recipe.sourceUrl} target='_blank'>original recipe</a></p>
+            <p>View <a href={recipe.sourceUrl} target='_blank' rel='noreferrer'>original recipe</a></p>
             </>
           )}
         </div>
@@ -88,7 +88,7 @@ function Recipe() {
               <h1>{recipe.name}</h1>
               <p className="desc">{recipe.description}</p>
               {recipe.sourceUrl && recipe.sourceName && (
-                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank'>{recipe.sourceName}</a></p>
+                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank' rel='noreferrer'>{recipe.sourceName}</a></p>
                 )
               }
               {true && (
