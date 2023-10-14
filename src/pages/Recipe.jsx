@@ -64,7 +64,23 @@ function Recipe() {
           )}
         </div>
         <Container className='recipeInner' fluid>
-          <Row className='meta'>
+        <Row className='info'>
+            <Col className='mb-3'>
+              <h1>{recipe.name}</h1>
+              <p className="desc">{recipe.description}</p>
+              {recipe.sourceUrl && recipe.sourceName && (
+                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank' rel='noreferrer'>{recipe.sourceName}</a></p>
+                )
+              }
+              {true && (
+                <Link className='edit-link' to={`/edit-recipe/${recipe.slug}?id=${recipeID}`} title='Edit Recipe'>Edit Recipe <i className="fa-solid fa-pen-to-square"></i></Link>
+              )}
+            </Col>
+            <Col md={8} className='p-0'>
+              <Image fluid src={recipe.imgUrls[0]+'&tr=w-1000,h-600'}></Image>
+            </Col>
+          </Row>
+          <Row className='meta mt-3 mb-5'>
             {recipe.servings && (
               <Col className='servings' xs={12} sm={4} lg={3}>Makes {recipe.servings}</Col>
             )}
@@ -82,22 +98,6 @@ function Recipe() {
                 })}
                 </Col>
               )}
-          </Row>
-          <Row className='info'>
-            <Col>
-              <h1>{recipe.name}</h1>
-              <p className="desc">{recipe.description}</p>
-              {recipe.sourceUrl && recipe.sourceName && (
-                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank' rel='noreferrer'>{recipe.sourceName}</a></p>
-                )
-              }
-              {true && (
-                <Link className='edit-link' to={`/edit-recipe/${recipe.slug}?id=${recipeID}`} title='Edit Recipe'>Edit Recipe <i className="fa-solid fa-pen-to-square"></i></Link>
-              )}
-            </Col>
-            <Col md={8}>
-              <Image fluid src={recipe.imgUrls[0]+'&tr=w-1000,h-600'}></Image>
-            </Col>
           </Row>
           <Row className='ing-dir'>
             <Col md={6}>

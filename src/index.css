@@ -186,9 +186,9 @@ img { width: 100%; }
   color: #333;
   text-decoration: underline;
 }
-.container-fluid.recipe .info {
+/* .container-fluid.recipe .info {
   margin-bottom: 3rem;
-}
+} */
 .meta.row {
   border: 1px solid #ddd;
   border-left: 0;
