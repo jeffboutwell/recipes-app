@@ -31,7 +31,7 @@ function EditRecipe() {
         featuredImage: '',
         slug: ''
     })
-    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,imgUrls,featuredImage,slug} = formData
+    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,tags,notes,images,imgUrls,featuredImage,slug,source,sourceUrl} = formData
     const [loading, setLoading] = useState(false)
     const [allTags, setAllTags] = useState(null)
     const [addTag, setAddTag] = useState(false)
@@ -132,13 +132,19 @@ function EditRecipe() {
         //Update recipe
         delete formDataCopy.images
         const docRef = doc(db,'recipes',recipeID)
-        await updateDoc(docRef,formDataCopy)
-        updateAlgoliaRecord(formDataCopy).then(updatedObject => {
-            console.log('updateAlgoliaRecord was successful',updatedObject)
-            setLoading(false)
-            toast.success('Recipe updated')
-            navigate(`/recipe/${formDataCopy.slug}`)
-        })
+        console.log(formDataCopy)
+        try {
+            await updateDoc(docRef,formDataCopy)
+            updateAlgoliaRecord(formDataCopy).then(updatedObject => {
+                console.log('updateAlgoliaRecord was successful',updatedObject)
+                setLoading(false)
+                toast.success('Recipe updated')
+                navigate(`/recipe/${formDataCopy.slug}`)
+            })
+        } catch (e) {
+            console.error(e)
+        }
+
     }
 
     const onMutate = e => {
@@ -300,6 +306,14 @@ function EditRecipe() {
                 <Form.Group className="form-group" controlId="notes">
                     <Form.Label>Notes</Form.Label>
                     <Form.Control as="textarea" placeholder="Enter recipe notes" rows='8' value={notes} onChange={onMutate} />
+                </Form.Group>
+                <Form.Group className="form-group" controlId="source">
+                    <Form.Label>Source</Form.Label>
+                    <Form.Control type="text" placeholder="Enter recipe source" value={source} onChange={onMutate} />
+                </Form.Group>
+                <Form.Group className="form-group" controlId="sourceUrl">
+                    <Form.Label>Source URL</Form.Label>
+                    <Form.Control type="text" placeholder="Enter recipe source URL" value={sourceUrl} onChange={onMutate} />
                 </Form.Group>
                 <Form.Group className="form-group" controlId="images">
                     <Form.Label>Images</Form.Label>

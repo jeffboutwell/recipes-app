@@ -24,7 +24,7 @@ function CreateRecipe() {
         images: {},
         featuredImage: ''
     })
-    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,notes,images,featuredImage} = formData
+    const {name,servings,prepTime,cookTime,description,type,ingredients,directions,notes,images,source,sourceUrl} = formData
     const [loading, setLoading] = useState(false)
     const [tags, setTags] = useState(null)
     const [addTag, setAddTag] = useState(false)
@@ -271,7 +271,15 @@ function CreateRecipe() {
                 </FormGroup>
                 <Form.Group className="form-group" controlId="notes">
                     <Form.Label>Notes</Form.Label>
-                    <Form.Control as="textarea" placeholder="Enter recipe notes" rows='8' value={notes} onChange={onMutate} required />
+                    <Form.Control as="textarea" placeholder="Enter recipe notes" rows='8' value={notes} onChange={onMutate} />
+                </Form.Group>
+                <Form.Group className="form-group" controlId="source">
+                    <Form.Label>Source</Form.Label>
+                    <Form.Control type="text" placeholder="Enter recipe source" value={source} onChange={onMutate} />
+                </Form.Group>
+                <Form.Group className="form-group" controlId="sourceUrl">
+                    <Form.Label>Source URL</Form.Label>
+                    <Form.Control type="text" placeholder="Enter recipe source URL" value={sourceUrl} onChange={onMutate} />
                 </Form.Group>
                 <Form.Group className="form-group" controlId="images">
                     <Form.Label>Images</Form.Label>
