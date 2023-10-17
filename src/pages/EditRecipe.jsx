@@ -132,19 +132,16 @@ function EditRecipe() {
         //Update recipe
         delete formDataCopy.images
         const docRef = doc(db,'recipes',recipeID)
-        console.log(formDataCopy)
-        try {
-            await updateDoc(docRef,formDataCopy)
-            updateAlgoliaRecord(formDataCopy).then(updatedObject => {
+        console.log('formDataCopy',formDataCopy)
+        await updateDoc(docRef,formDataCopy)
+            .catch(console.error(e))
+            .then(updateAlgoliaRecord(formDataCopy))
+            .then(updatedObject => {
                 console.log('updateAlgoliaRecord was successful',updatedObject)
                 setLoading(false)
                 toast.success('Recipe updated')
                 navigate(`/recipe/${formDataCopy.slug}`)
             })
-        } catch (e) {
-            console.error(e)
-        }
-
     }
 
     const onMutate = e => {
