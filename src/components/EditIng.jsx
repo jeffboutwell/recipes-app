@@ -4,9 +4,9 @@ import { SortableItem, SortableKnob } from 'react-easy-sort'
 import {v4 as uuidv4} from 'uuid'
 
 function EditIng(props) {
-    const [amt,setAmt] = useState(props.ing.amt ? props.ing.amt : '')
-    const [unit,setUnit] = useState(props.ing.unit ? props.ing.unit : '')
-    const [name,setName] = useState(props.ing.name ? props.ing.name : '')
+    const [amt,setAmt] = useState(props.ing.amt ? props.ing.amt : null)
+    const [unit,setUnit] = useState(props.ing.unit ? props.ing.unit : null)
+    const [name,setName] = useState(props.ing.name ? props.ing.name : null)
     const [slugName,setSlugName] = useState(props.ing.name.replace(' ','-'))
     const [id,setID] = useState(props.ing.id ? props.ing.id : uuidv4())
 
