@@ -5,12 +5,15 @@ import {collection,query,where,getDocs} from 'firebase/firestore'
 import {db} from '../firebase.config'
 import {Container,Row,Col,Image, ListGroup} from 'react-bootstrap'
 import RecipeList from '../components/RecipeList'
+//import NewRecipeList from '../components/NewRecipeList'
 import { toast } from 'react-toastify'
 
 function Recipe() {
   const [recipe, setRecipe] = useState(null)
   const [recipeID, setRecipeID] = useState(null)
   const [loading, setLoading] = useState(true)
+  //const [recipeQuery, setRecipeQuery] = useState(null)
+  //const [relatedQuery,setRelatedQuery] = useState(null)
   //const [shareLinkCopied, setShareLinkCopied] = useState(false)
 
   const navigate = useNavigate()
@@ -18,6 +21,7 @@ function Recipe() {
   //const auth = getAuth()
 
   useEffect(() => {
+    console.log('useEffect - recipe')
     const fetchRecipe = async () => {
       const recipesRef = collection(db,'recipes')
       const q = query(recipesRef, where('slug', '==', params.recipeSlug))
@@ -130,7 +134,7 @@ function Recipe() {
           <Container className='recent' fluid>
           <h2>Related Recipes</h2>
           <Row className='recipeList'>
-            <RecipeList format="minimal" query={q} imgW="500" imgH="300" allowEdit={false} limit='4' />
+            <RecipeList format="minimal" exclude={recipeID} key={recipeID} query={q} imgW="500" imgH="300" allowEdit={false} />
           </Row>
         </Container>
         )}
