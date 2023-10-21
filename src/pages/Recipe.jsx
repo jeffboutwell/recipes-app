@@ -52,7 +52,10 @@ function Recipe() {
 
   const recipesRef = collection(db, 'recipes')
   let q
-  if(recipe.tags.length>0) { q = query(recipesRef, where('tags', 'array-contains-any', recipe.tags)) }
+  if(recipe.tags.length>0) {
+    //const recipeTags = recipe.tags.splice(recipe.tags.indexOf('vegan'),1)
+    q = query(recipesRef, where('tags', 'array-contains-any', recipe.tags))
+  }
 
   return (
     <Container className='recipe' fluid>
@@ -134,7 +137,7 @@ function Recipe() {
           <Container className='recent' fluid>
           <h2>Related Recipes</h2>
           <Row className='recipeList'>
-            <RecipeList format="minimal" exclude={recipeID} key={recipeID} query={q} imgW="500" imgH="300" allowEdit={false} />
+            <RecipeList format="minimal" excludeID={recipeID} key={recipeID} query={q} imgW="500" imgH="300" limit={4} allowEdit={false} />
           </Row>
         </Container>
         )}
