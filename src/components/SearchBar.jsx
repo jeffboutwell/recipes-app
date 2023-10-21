@@ -15,7 +15,7 @@ function Hit({ hit }) {
     <Link to={`/recipe/${hit.slug}`} className='searchRecipeLink'>
     <article>
       <img src={hit.imgUrls[0]+`&tr=w-200,h-200`} alt={hit.name} />
-      <p>{hit.name}</p>
+      <p><strong>{hit.name}</strong></p>
     </article>
     </Link>
   );
@@ -29,10 +29,14 @@ function SearchBar(props) {
     search(query)
   };
 
+  const hideQuery = () => {
+    setShowHits(false)
+  }
+
   return (
     <InstantSearch searchClient={searchClient} indexName="recipes_jeffboutwell" {...props}>
       <SearchBox queryHook={queryHook} />
-      {showHits ? <Hits hitComponent={Hit} /> : null}
+      {showHits ? <Hits hitComponent={Hit} onClick={hideQuery} /> : null}
     </InstantSearch>
   )
 }
