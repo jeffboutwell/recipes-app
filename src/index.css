@@ -257,8 +257,38 @@ label[for=tags] { display: block; }
 /* Search */
 ol.ais-Hits-list {
   position: absolute;
+  left: 50%;
   z-index: 100;
+  list-style: none;
+  width: 500px;
+  max-width: 90%;
+  transform: translate(-50%, 50px);
+  padding: 0px;
 }
 li.ais-Hits-item {
   background-color: #eee;
+  border: 1px solid #aaa;
+  margin-bottom: .5em;
+  box-shadow: 0px 0px 5px rgba(0,0,0,.2);
+}
+li.ais-Hits-item:hover {
+  background-color: #ccc;
+}
+li.ais-Hits-item a {
+  color: #333;
+  text-decoration: none;
+}
+li.ais-Hits-item article {
+  display: flex;
+}
+li.ais-Hits-item article img {
+  width: 20%;
+  height: auto;
+}
+li.ais-Hits-item article p {
+  padding: .5em;
+  text-transform: capitalize;
+  font-size: 1.3em;
+  line-height: 1.2;
+  text-align: left;
 }
