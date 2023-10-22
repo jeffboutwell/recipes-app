@@ -244,8 +244,9 @@ label[for=tags] { display: block; }
 #editRecipe .ingListItem.amt, .dragged-ing .ingListItem.amt { width: 4rem; }
 #editRecipe .ingListItem.unit, .dragged-ing .ingListItem.unit { width: 12rem; }
 #editRecipe .ingListItem.name, .dragged-ing .ingListItem.name { width: 50rem; }
+#editRecipe .ing-list .form-group { margin-bottom: 10px;  }
 #editRecipe .ing-list .fa-sort { font-size: 1.15em; margin-right: 1em; }
-#editRecipe .editImgThumbsCont { margin-bottom: 1rem; }
+#editRecipe .editImgThumbsCont { margin: 0 0 1rem; }
 #editRecipe .editImgThumb { position: relative; }
 #editRecipe .editImgThumb .fa-trash-can { position: absolute; right: .5rem; top: .5rem; opacity: .6; }
 #editRecipe .editImgThumb .fa-trash-can:hover { opacity: 1; }

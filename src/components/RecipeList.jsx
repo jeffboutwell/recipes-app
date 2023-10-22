@@ -51,7 +51,7 @@ function RecipeList(props) {
       {!loading && recipes?.length > 0 && (
         <>
           {recipes.map((recipe) => (
-          <Col key={recipe.id} xs={12} md={6} lg={4} xl={3}>
+          <Col key={recipe.id} xs={12} md={6} lg={3}>
               <RecipeListItem recipe={recipe.data} id={recipe.id} imgW={props.imgW} imgH={props.imgH} allowEdit={props.allowEdit} />
           </Col>
           ))}
