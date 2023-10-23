@@ -186,10 +186,6 @@ img { width: 100%; }
   color: #333;
   text-decoration: underline;
 }
-.ing-dir.row li.list-group-item, .recipeList.row .col-12 {
-  padding-right: 0;
-  padding-left: 0;
-}
 
 /* .container-fluid.recipe .info {
   margin-bottom: 3rem;
