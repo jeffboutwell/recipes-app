@@ -58,7 +58,7 @@ function Recipe() {
   }
 
   return (
-    <Container className='recipe' fluid>
+    <Container className='recipe p-0' fluid>
         <div className="shareIconDiv" onClick={() => {
           navigator.clipboard.writeText(window.location.href)
           toast.info('Link copied!')
@@ -70,7 +70,7 @@ function Recipe() {
             </>
           )}
         </div>
-        <Container className='recipeInner' fluid>
+        <Container className='recipeInner p-0' fluid>
         <Row className='info'>
             <Col className='mb-3'>
               <h1>{recipe.name}</h1>
