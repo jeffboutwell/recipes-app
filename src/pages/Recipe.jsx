@@ -63,20 +63,15 @@ function Recipe() {
           navigator.clipboard.writeText(window.location.href)
           toast.info('Link copied!')
         }}>
-          {recipe.sourceUrl && (
-            <>
-            <p><i className="fa-solid fa-share" alt='Share Link'></i></p>
-            <p>View <a href={recipe.sourceUrl} target='_blank' rel='noreferrer'>original recipe</a></p>
-            </>
-          )}
+        <p><i className="fa-solid fa-share" alt='Share Link'></i></p>
         </div>
         <Container className='recipeInner p-0' fluid>
         <Row className='info'>
             <Col className='mb-3'>
               <h1>{recipe.name}</h1>
               <p className="desc">{recipe.description}</p>
-              {recipe.sourceUrl && recipe.sourceName && (
-                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank' rel='noreferrer'>{recipe.sourceName}</a></p>
+              {recipe.sourceUrl && recipe.source && (
+                  <p className="source">Source: <a href={recipe.sourceUrl} title='View original recipe' target='_blank' rel='noreferrer'>{recipe.source}</a></p>
                 )
               }
               {true && (
